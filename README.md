@@ -8,22 +8,23 @@
 [![Analytics](https://ga-beacon.appspot.com/UA-18144954-10/github/elgalu/docker-selenium/README.md)](https://github.com/igrigorik/ga-beacon "Analytics")
 [![Gitter](https://badges.gitter.im/elgalu/selenium.svg)](https://gitter.im/elgalu/docker-selenium "Chat support")
 
-* selenium server grid with 2 nodes (chrome & firefox)
-* mp4 video recording
-* VNC access (useful for debugging the container)
-* google-chrome-stable
-* google-chrome-beta: no longer provided but [can still be found here][2.47.1m]
-* google-chrome-unstable: no longer provided but [can still be found here][2.47.1m]
-* firefox stable latest
-* firefox stable [last 18 versions can be found here][2.47.1m]
-* fluxbox (openbox window manager can still be found [here](https://github.com/elgalu/docker-selenium/releases/tag/3.0.1c))
+-   selenium server grid with 2 nodes (chrome & firefox)
+-   mp4 video recording
+-   VNC access (useful for debugging the container)
+-   google-chrome-stable
+-   google-chrome-beta: no longer provided but [can still be found here][2.47.1m]
+-   google-chrome-unstable: no longer provided but [can still be found here][2.47.1m]
+-   firefox stable latest
+-   firefox stable [last 18 versions can be found here][2.47.1m]
+-   fluxbox (openbox window manager can still be found [here](https://github.com/elgalu/docker-selenium/releases/tag/3.0.1c))
 
-Selenium 3  `docker run ... elgalu/selenium:latest`
+Selenium 3 `docker run ... elgalu/selenium:latest`
 ![docker-selenium-grid](./images/grid3_console.png)
 
-Selenium 2  `docker run ... elgalu/selenium:2` **no longer maintained**
+Selenium 2 `docker run ... elgalu/selenium:2` **no longer maintained**
 
 ### Purpose
+
 The purpose of this project is to have [Selenium][] running as simple and as fast as possible.
 
 This purpose is augmented by [Zalenium][] a project which uses this one to provide docker-selenium(s) on-demand.
@@ -34,16 +35,18 @@ This purpose is augmented by [Zalenium][] a project which uses this one to provi
 
 Note [SeleniumHQ/docker-selenium](https://github.com/SeleniumHQ/docker-selenium) and this one share the same purpose however both projects have diverged considerably in the last two years, some major differences are:
 
-* both browsers and also the grid are on the same container in this repo
-* support for [video recording](./docs/videos.md)
-* process manager: this image uses [supervisord](http://supervisord.org) while the official [uses bash](https://github.com/SeleniumHQ/docker-selenium/blob/master/StandaloneChromeDebug/entry_point.sh)
+-   both browsers and also the grid are on the same container in this repo
+-   support for [video recording](./docs/videos.md)
+-   process manager: this image uses [supervisord](http://supervisord.org) while the official [uses bash](https://github.com/SeleniumHQ/docker-selenium/blob/master/StandaloneChromeDebug/entry_point.sh)
 
 Even though both projects share the same purpose is good to have alternatives, see also for example [docker-alpine-selenium](https://github.com/SUNx2YCH/docker-alpine-selenium). Letting more than 1 docker-selenium project grow to be able to learn from each other's success or failures ultimately impacts the final users positively. This doesn't discard that at some point all selenium maintainers will sit together a sprint to coordinate some major changes and cleanup open issues and perhaps we might merge N similar projects in the future.
 
 ### Statistics
+
 [![ga-datastudio-docker-selenium](./images/ga-datastudio-docker-selenium.png)](https://datastudio.google.com/open/0B3GcHpfNB6-FRDd3RWo1ZWh4N3M "Docker-Selenium usage stats v1")
 
 ### Alternatives
+
 If you don't require video recording we suggest to use either [Google Chrome in headless mode](https://chromium.googlesource.com/chromium/src/+/master/headless/README.md) or [Firefox in headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode).
 
 We also recommend avoiding [PhantomJS](https://github.com/ariya/phantomjs) as maintenance was stopped after Chrome & Firefox headless became available.
@@ -51,6 +54,7 @@ We also recommend avoiding [PhantomJS](https://github.com/ariya/phantomjs) as ma
 You can also use a paid service like [Sauce Labs][sauce] or [BrowserStack][], note they offer free open source accounts and straightforward [integration with Travis CI](https://docs.travis-ci.com/user/sauce-connect/).
 
 ### Requisites
+
 This project is normally tested in the last version of Docker and docker-compose and also in the release candidates.
 To figure out the currently used specific versions it surely works on,
 see file [.travis.yml](./.travis.yml) example values:
@@ -61,7 +65,6 @@ see file [.travis.yml](./.travis.yml) example values:
 If you need to use docker-machine to run docker
 (like for example on a Mac before the Docker native version 1.12),
 you also need to install VirtualBox and then run these commands to get started:
-
 
 ```sh
 docker-machine create --driver virtualbox default
@@ -74,14 +77,14 @@ You will need to run the second `eval` command for every new terminal window.
 
 <h4 id="run"><img width="24" src="./images/icons/logo.png" /> Run</h4>
 
-1. Pull the image and run the container
+1.  Pull the image and run the container
 
         docker pull elgalu/selenium #upgrades to latest if a newer version is available
 
         docker run -d --name=grid -p 4444:24444 -p 5900:25900 \
             -e TZ="US/Pacific" -v /dev/shm:/dev/shm --privileged elgalu/selenium
 
-2. Wait until the grid starts properly before starting the tests _(Optional but recommended)_
+2.  Wait until the grid starts properly before starting the tests _(Optional but recommended)_
 
         docker exec grid wait_all_done 30s
         # Or if docker exec is not available (eg. circleci)
@@ -91,10 +94,12 @@ After this, [Selenium][] will be up and ready to accept clients at `http://local
 If you are using Mac (OSX) or [Microsoft Windows](https://docs.docker.com/engine/installation/windows/) `localhost` won't work unless you are in Docker Beta (version >= 1.12) If you are using Docker version <= 1.11 please find out the correct IP through `docker-machine ip default`.
 
 **Notes:**
- * The new default `VNC_PASSWORD=no` will make it VNC passwordless accessible.
- * Once this [docker feature](https://github.com/docker/docker/pull/22719) is in place `wait_all_done` won't be necessary anymore.
+
+-   The new default `VNC_PASSWORD=no` will make it VNC passwordless accessible.
+-   Once this [docker feature](https://github.com/docker/docker/pull/22719) is in place `wait_all_done` won't be necessary anymore.
 
 #### Stop
+
 Shutdown gracefully
 
     docker exec grid stop
@@ -105,24 +110,27 @@ Shutdown immediately, no mercy
     docker rm -vf grid
 
 ### Docker Compose
+
 See [docker-compose](./docs/docker-compose.md)
 
 ### Jenkins
+
 See [jenkins](./docs/jenkins.md)
 
 ### Parallel
+
 We now have a better suited product for this use case, is called [Zalenium][]
 
 This image is designed to run one test on each docker container but if you still want to run multiple tests in parallel you can still do so with [Zalenium][]
 
 If you want to limit yourself to this project, you still can. There are some ways to do it:
 
-1. The recommended way is via [docker-compose](./docs/docker-compose.md) and you should replace `mock` with your web service under test within the [docker-compose-tests.yml][] file.
+1.  The recommended way is via [docker-compose](./docs/docker-compose.md) and you should replace `mock` with your web service under test within the [docker-compose-tests.yml][] file.
 
         docker-compose -f docker-compose-tests.yml -p grid up --force-recreate
         docker-compose -f docker-compose-tests.yml -p grid scale mock=1 hub=1 chrome=3 firefox=3
 
-1. The _(not recommended)_ way is by increasing `MAX_INSTANCES` and `MAX_SESSIONS` which now [defaults](https://github.com/elgalu/docker-selenium/blob/2.53.1a/Dockerfile#L967) to 1.
+1.  The _(not recommended)_ way is by increasing `MAX_INSTANCES` and `MAX_SESSIONS` which now [defaults](https://github.com/elgalu/docker-selenium/blob/2.53.1a/Dockerfile#L967) to 1.
 
         docker run -d --name=grid -p 4444:24444 -p 5900:25900 \
             -v /dev/shm:/dev/shm --privileged \
@@ -134,6 +142,7 @@ The drawback is that all tests will run on the same desktop meaning the video re
 Another problem with increasing `MAX_INSTANCES` & `MAX_SESSIONS` is focus issues. So in this case is better scale up/down via [docker-compose](./docs/docker-compose.md).
 
 ### OSX
+
 If you are in Mac, you need to get the correct IP of the docker machine. One of these two commands should work to get it:
 
     docker-machine ip default
@@ -143,6 +152,7 @@ or former:
     boot2docker ip
 
 ### Screen size
+
 You can set a custom screen size at docker run time by providing `SCREEN_WIDTH` and `SCREEN_HEIGHT` environment variables:
 
     docker pull elgalu/selenium
@@ -157,6 +167,7 @@ You can set a custom screen size at docker run time by providing `SCREEN_WIDTH` 
     open vnc://:hola@localhost:5900
 
 ### TimeZone
+
 You can control and modify the timezone on a container by using the [TZ](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) environment variable through the `docker run` command, e.g. by adding `-e TZ="US/Pacific"`
 
     docker run --rm -ti --name=grid -p 4444:24444 -p 5900:25900 \
@@ -197,7 +208,7 @@ It is recommended to create first a local folder `videos` in your current direct
 an easy transfer with `-v $(pwd)/videos:/videos`.
 
 Once your tests are done you can either manually stop the recording via `docker exec grid /bin-utils/stop-video` where
-*grid* is just the arbitrary container chosen name in `docker run` command. Or simply stop the container and that will stop the video recording automatically.
+_grid_ is just the arbitrary container chosen name in `docker run` command. Or simply stop the container and that will stop the video recording automatically.
 
 Relevant up-to-date environment variables to customize it are at the Dockerfile, below a possibly outdated list of settings:
 
@@ -210,7 +221,7 @@ Relevant up-to-date environment variables to customize it are at the Dockerfile,
     MP4_INTERLEAVES_MEDIA_DATA_CHUNKS_SECS="500"
     VIDEO_FILE_NAME="test"
 
-It is important to note that `ffmpeg` video recording takes an important amount of CPU usage, even more when a well compressed format like *mp4* is selected.
+It is important to note that `ffmpeg` video recording takes an important amount of CPU usage, even more when a well compressed format like _mp4_ is selected.
 
 ### VNC
 
@@ -218,7 +229,7 @@ When you don't specify a VNC password, the new default `VNC_PASSWORD=no` will ma
 
 ### noVNC
 
-Disabled by default, [noVNC](https://github.com/kanaka/noVNC) provides a browser VNC client so you don't need to install a vnc viewer if you choose so. *Note:* we were using guacamole before.
+Disabled by default, [noVNC](https://github.com/kanaka/noVNC) provides a browser VNC client so you don't need to install a vnc viewer if you choose so. _Note:_ we were using guacamole before.
 
 Safari Browser already comes with a built-in vnc viewer so this feature is overkill and is disabled by default, just navigate to vnc://localhost:5900 in your Safari browser.
 
@@ -250,6 +261,7 @@ We also found recently that when missing `--privileged` haveged will break: `hav
 Same as Chrome, people have [reported](https://goo.gl/5UzpDq) the shm fix might also be necessary for Firefox.
 
 ### Chrome not reachable or timeout after 60 secs
+
 In CentOS and apparently since docker 1.10.0 is necessary to disable [sandbox mode](http://www.chromium.org/developers/design-documents/sandbox) through [--no-sandbox](http://peter.sh/experiments/chromium-command-line-switches/#no-sandbox) example client implementation.
 
 The error comes along with this message while starting Chrome:
@@ -273,11 +285,13 @@ In Protrator
 However this is now the default of this image, see `CHROME_ARGS="--no-sandbox"` in the Dockerfile so don't be surprised to see the "Stability and security will suffer" banner when opening Chrome inside the container.
 
 ## Cloud Testing Platforms
+
 We now have a better suited product for this use case, is called [Zalenium][]
 
 ## Additional Uses
 
 ### Using Xephyr to redirect X to the docker host
+
 Note the below method gives full access to the docker container to the host machine.
 
 Host machine, terminal 1:
@@ -294,12 +308,14 @@ Host machine, terminal 2:
       -e SCREEN_WIDTH -e SCREEN_HEIGHT -e XE_DISP_NUM \
       -v /tmp/.X11-unix/X${XE_DISP_NUM}:/tmp/.X11-unix/X${XE_DISP_NUM} \
       elgalu/selenium
+
 3
 Now when you run your tests instead of connecting. If docker run fails try `xhost +`
 
 ## Step by step build
 
 ### Build this image
+
 If you git clone this repo locally, i.e. `git clone` it and `cd` into where the Dockerfile is, you can:
 
     docker build -t selenium .
@@ -311,9 +327,9 @@ If you git clone this repo locally, i.e. `git clone` it and `cd` into where the 
     CH=$(docker run --rm --name=CH -p=127.0.0.1::24444 -p=127.0.0.1::25900 \
         -v /e2e/uploads:/e2e/uploads selenium)
 
-*Note:* `-v /e2e/uploads:/e2e/uploads` is optional in case you are testing browser uploads on your WebApp, you'll probably need to share a directory for this.
+_Note:_ `-v /e2e/uploads:/e2e/uploads` is optional in case you are testing browser uploads on your WebApp, you'll probably need to share a directory for this.
 
-The `127.0.0.1::` part is to avoid binding to all network interfaces, most of the time you don't need to expose the docker container like that so just *localhost* for now.
+The `127.0.0.1::` part is to avoid binding to all network interfaces, most of the time you don't need to expose the docker container like that so just _localhost_ for now.
 
 I like to remove the containers after each e2e test with `--rm` since this docker container is not meant to preserve state, spawning a new one is less than 3 seconds. You need to think of your docker container as processes, not as running virtual machines in case you are familiar with vagrant.
 
@@ -356,7 +372,7 @@ This command line is the same as for Chrome, remember that the selenium running 
 
 #### How to share the host DNS
 
-By default `docker run` sets the DNS to Google ones *8.8.8.8 and 8.8.4.4* however you may need to use your own.
+By default `docker run` sets the DNS to Google ones _8.8.8.8 and 8.8.4.4_ however you may need to use your own.
 
 First attempt is to use `--dns` option, e.g.
 
@@ -369,6 +385,7 @@ However this may not work for you and simply want to share the same DNS name res
 So `--pid=host` is included to avoid https://github.com/docker/docker/issues/5899 `sudo: unable to send audit message: Operation not permitted`
 
 ##### Pid
+
 Full example using `--net=host` and `--pid=host` but for this to work in OSX you need the latest docker mac package, upgrade if you haven't done so in the last month.
 
     docker run -d --name=grid --net=host --pid=host \
@@ -384,18 +401,18 @@ Full example using `--net=host` and `--pid=host` but for this to work in OSX you
 
 ## Who is using docker-selenium?
 
-* [Zalando](https://tech.zalando.com/blog/)
-* [Shoov](http://www.gizra.com/content/phantomjs-chrome-docker-selenium-standalone/)
-* [smaato](http://blog.smaato.com/automated-end-to-end-testing-with-protractor-docker-jenkins)
-* [Algolia](https://github.com/algolia/instantsearch.js/#functional-tests)
-* [Nvidia](https://twitter.com/nvidia)
-* And many more! Please ping @elgalu to add you here.
+-   [Zalando](https://tech.zalando.com/blog/)
+-   [Shoov](http://www.gizra.com/content/phantomjs-chrome-docker-selenium-standalone/)
+-   [smaato](http://blog.smaato.com/automated-end-to-end-testing-with-protractor-docker-jenkins)
+-   [Algolia](https://github.com/algolia/instantsearch.js/#functional-tests)
+-   [Nvidia](https://twitter.com/nvidia)
+-   And many more! Please ping @elgalu to add you here.
 
 ## Troubleshooting
 
 All output is sent to stdout so it can be inspected by running:
 
-``` bash
+```bash
 $ docker logs -f <container-id|container-name>
 ```
 
@@ -421,6 +438,7 @@ Powered by Supervisor, the container leaves many logs;
     /var/log/cont/xvfb-stdout.log
 
 ## Changelog
+
 See [CHANGELOG.md](./CHANGELOG.md)
 
 The sha256 digests are generated after pushing the image to the registry therefore the last version of this docker-selenium will always have digest TBD (to be determined) but will be updated manually at [releases][]
@@ -432,17 +450,32 @@ How to get container versions
     docker exec grid versions
 
 ## Security
+
 See [SECURITY.md](./SECURITY.md)
 
 ## License
+
 See [LICENSE.md](./LICENSE.md)
 
 <!-- links -->
+
 [2.47.1m]: https://github.com/elgalu/docker-selenium/releases/tag/2.47.1m
-[Selenium]: https://github.com/SeleniumHQ/selenium
+[selenium]: https://github.com/SeleniumHQ/selenium
 [sauce]: https://saucelabs.com/selenium/selenium-grid
-[BrowserStack]: https://www.browserstack.com/automate
+[browserstack]: https://www.browserstack.com/automate
 [xvfb-electron]: http://electron.atom.io/docs/tutorial/testing-on-headless-ci
 [docker-compose.yml]: ./docker-compose.yml
 [releases]: https://github.com/elgalu/docker-selenium/releases/
-[Zalenium]: https://github.com/zalando/zalenium
+[zalenium]: https://github.com/zalando/zalenium
+
+## Changed values from Original repository
+
+```
+TZ="Asia/Tokyo"
+FF_LANG="ja"
+MAX_INSTANCES=10
+MAX_SESSIONS=10
+SEND_ANONYMOUS_USAGE_INFO="false"
+NOVNC=true
+fonts-tlwg-garuda
+```

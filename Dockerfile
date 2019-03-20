@@ -37,7 +37,7 @@ LABEL maintainer "Leo Gallucci <elgalu3+dosel@gmail.com>"
 
 # No interactive frontend during docker build
 ENV DEBIAN_FRONTEND=noninteractive \
-    DEBCONF_NONINTERACTIVE_SEEN=true
+  DEBCONF_NONINTERACTIVE_SEEN=true
 
 # GPG servers aren't too reliable (especially in out test builds)
 # so fallback servers are needed
@@ -47,17 +47,17 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # How to remove keys? e.g. sudo apt-key del 2EA8F35793D8809A
 RUN set -ex \
   && for key in \
-    2EA8F35793D8809A \
-    40976EAF437D05B5 \
-    3B4FE6ACC0B21F32 \
-    A2F683C52980AECF \
-    F76221572C52609D \
-    58118E89F3A912897C070ADBF76221572C52609D \
+  2EA8F35793D8809A \
+  40976EAF437D05B5 \
+  3B4FE6ACC0B21F32 \
+  A2F683C52980AECF \
+  F76221572C52609D \
+  58118E89F3A912897C070ADBF76221572C52609D \
   ; do \
-    gpg --keyserver keyserver.ubuntu.com --recv-keys "$key" || \
-    gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
-    gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
+  gpg --keyserver keyserver.ubuntu.com --recv-keys "$key" || \
+  gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
+  gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
+  gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" ; \
   done
 
 #========================
@@ -113,23 +113,23 @@ RUN set -ex \
 # Layer size: medium: 27.9 MB (with --no-install-recommends)
 RUN apt -qqy update \
   && apt -qqy install \
-    libltdl7 \
-    libhavege1 \
-    netcat-openbsd \
-    pwgen \
-    bc \
-    unzip \
-    bzip2 \
-    apt-utils \
-    net-tools \
-    jq \
-    sudo \
-    psmisc \
-    iproute2 \
-    iputils-ping \
-    dbus-x11 \
-    wget \
-    curl \
+  libltdl7 \
+  libhavege1 \
+  netcat-openbsd \
+  pwgen \
+  bc \
+  unzip \
+  bzip2 \
+  apt-utils \
+  net-tools \
+  jq \
+  sudo \
+  psmisc \
+  iproute2 \
+  iputils-ping \
+  dbus-x11 \
+  wget \
+  curl \
   && apt -qyy autoremove \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
@@ -148,9 +148,9 @@ ENV LANG ${LANGUAGE}
 # Layer size: small: ~9 MB MB (with --no-install-recommends)
 RUN apt -qqy update \
   && apt -qqy --no-install-recommends install \
-    language-pack-en \
-    tzdata \
-    locales \
+  language-pack-en \
+  tzdata \
+  locales \
   && locale-gen ${LANGUAGE} \
   && dpkg-reconfigure --frontend noninteractive locales \
   && apt -qyy autoremove \
@@ -163,7 +163,7 @@ RUN apt -qqy update \
 # Full list at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 #  e.g. "US/Pacific" for Los Angeles, California, USA
 # e.g. ENV TZ "US/Pacific"
-ENV TZ="Europe/Berlin"
+ENV TZ="Asia/Tokyo"
 # Apply TimeZone
 # Layer size: tiny: 1.339 MB
 RUN echo "Setting time zone to '${TZ}'" \
@@ -175,13 +175,13 @@ RUN echo "Setting time zone to '${TZ}'" \
 #========================================
 # Layer size: tiny: 0.3 MB
 RUN useradd seluser \
-         --shell /bin/bash  \
-         --create-home \
+  --shell /bin/bash  \
+  --create-home \
   && usermod -a -G sudo seluser \
   && gpasswd -a seluser video \
   && echo 'seluser:secret' | chpasswd \
   && useradd extrauser \
-         --shell /bin/bash  \
+  --shell /bin/bash  \
   && usermod -a -G sudo extrauser \
   && gpasswd -a extrauser video \
   && gpasswd -a extrauser seluser \
@@ -199,11 +199,11 @@ RUN useradd seluser \
 # Layer size: big: 132.2 MB (with --no-install-recommends)
 RUN apt -qqy update \
   && apt -qqy install \
-    openjdk-8-jre-headless \
+  openjdk-8-jre-headless \
   && sed -i 's/securerandom.source=file:\/dev\/urandom/securerandom.source=file:\/dev\/.\/urandom/g' \
-       /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security \
+  /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security \
   && sed -i 's/securerandom.source=file:\/dev\/random/securerandom.source=file:\/dev\/.\/urandom/g' \
-       /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security \
+  /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security \
   && apt -qyy autoremove \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
@@ -246,7 +246,7 @@ RUN apt -qqy update \
 RUN apt -qqy update \
   && apt-key update -qqy \
   && apt -qqy install \
-    haveged rng-tools \
+  haveged rng-tools \
   && service haveged start \
   && update-rc.d haveged defaults \
   && apt -qyy autoremove \
@@ -261,7 +261,7 @@ WORKDIR /home/seluser
 
 # Docker backward compatibility
 RUN echo "${UBUNTU_FLAVOR}" > UBUNTU_FLAVOR \
- && echo "${UBUNTU_DATE}" > UBUNTU_DATE
+  && echo "${UBUNTU_DATE}" > UBUNTU_DATE
 
 #=================
 # Selenium latest
@@ -275,7 +275,7 @@ RUN  export SELBASE="https://selenium-release.storage.googleapis.com" \
   && export SELPATH="${SEL_DIRECTORY}/selenium-server-standalone-${SEL_VER}.jar" \
   && wget -nv ${SELBASE}/${SELPATH} \
   && ln -s "selenium-server-standalone-${SEL_VER}.jar" \
-           "selenium-server-standalone-3.jar"
+  "selenium-server-standalone-3.jar"
 
 LABEL selenium_version "${SEL_VER}"
 
@@ -314,11 +314,11 @@ USER root
 COPY test/requirements.txt /test/
 RUN apt -qqy update \
   && apt -qqy --no-install-recommends install \
-    python3 \
-    python3-pip \
-    python3-dev \
-    python3-openssl \
-    libssl-dev libffi-dev \
+  python3 \
+  python3-pip \
+  python3-dev \
+  python3-openssl \
+  libssl-dev libffi-dev \
   && pip3 install --no-cache --upgrade pip==9.0.3 \
   && pip3 install --no-cache setuptools \
   && pip3 install --no-cache numpy \
@@ -352,9 +352,9 @@ RUN cd /usr/local/bin \
 ENV RUN_DIR="/var/run/sele"
 RUN SHA="837c159ae51f3bf12c1d30a8cb44f3450611983c" \
   && pip install --no-cache \
-      "https://github.com/Supervisor/supervisor/zipball/${SHA}" || \
-     pip install --no-cache \
-      "https://github.com/Supervisor/supervisor/zipball/${SHA}" \
+  "https://github.com/Supervisor/supervisor/zipball/${SHA}" || \
+  pip install --no-cache \
+  "https://github.com/Supervisor/supervisor/zipball/${SHA}" \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -379,14 +379,15 @@ RUN SHA="837c159ae51f3bf12c1d30a8cb44f3450611983c" \
 # Layer size: small: 36.28 MB
 RUN apt -qqy update \
   && apt -qqy --no-install-recommends install \
-    libfontconfig \
-    libfreetype6 \
-    xfonts-cyrillic \
-    xfonts-scalable \
-    fonts-liberation \
-    fonts-ipafont-gothic \
-    fonts-wqy-zenhei \
-    ttf-ubuntu-font-family \
+  libfontconfig \
+  libfreetype6 \
+  xfonts-cyrillic \
+  xfonts-scalable \
+  fonts-liberation \
+  fonts-ipafont-gothic \
+  fonts-wqy-zenhei \
+  fonts-tlwg-garuda \
+  ttf-ubuntu-font-family \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -412,8 +413,8 @@ RUN apt -qqy update \
 # Layer size: small: 6.592 MB (with --no-install-recommends)
 RUN apt -qqy update \
   && apt -qqy install \
-    fluxbox \
-    xfce4-notifyd \
+  fluxbox \
+  xfce4-notifyd \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -431,8 +432,8 @@ RUN apt -qqy update \
 # Layer size: big: 162.6 MB
 RUN apt -qqy update \
   && apt -qqy --no-install-recommends install \
-    xvfb \
-    xorg \
+  xvfb \
+  xorg \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -443,7 +444,7 @@ RUN apt -qqy update \
 # Layer size: medium: 10.08 MB (with --no-install-recommends)
 RUN apt -qqy update \
   && apt -qqy install \
-    x11vnc \
+  x11vnc \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -462,14 +463,14 @@ USER seluser
 # Download kanaka/websockify dated 2015-06-02 commit 558a6439f14b0d85a31145541745e25c255d576b
 # Layer size: small: 2.919 MB
 ENV NOVNC_SHA="9223e8f2d1c207fb74cb4b8cc243e59d84f9e2f6" \
-    WEBSOCKIFY_SHA="cb1508fa495bea4b333173705772c1997559ae4b"
+  WEBSOCKIFY_SHA="cb1508fa495bea4b333173705772c1997559ae4b"
 RUN  wget -nv -O noVNC.zip \
-       "https://github.com/elgalu/noVNC/archive/${NOVNC_SHA}.zip" \
+  "https://github.com/elgalu/noVNC/archive/${NOVNC_SHA}.zip" \
   && unzip -x noVNC.zip \
   && mv noVNC-${NOVNC_SHA} noVNC \
   && rm noVNC.zip \
   && wget -nv -O websockify.zip \
-      "https://github.com/kanaka/websockify/archive/${WEBSOCKIFY_SHA}.zip" \
+  "https://github.com/kanaka/websockify/archive/${WEBSOCKIFY_SHA}.zip" \
   && unzip -x websockify.zip \
   && rm websockify.zip \
   && mv websockify-${WEBSOCKIFY_SHA} ./noVNC/utils/websockify
@@ -490,7 +491,7 @@ USER root
 # Layer size: big: 135.4 MB (with --no-install-recommends)
 RUN apt -qqy update \
   && apt -qqy --no-install-recommends install \
-    gstreamer1.0-libav \
+  gstreamer1.0-libav \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -521,8 +522,8 @@ RUN apt -qqy update \
 # Layer size: medium: ~17 MB
 RUN apt -qqy update \
   && apt -qqy install \
-    ffmpeg \
-    gpac \
+  ffmpeg \
+  gpac \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -536,7 +537,7 @@ RUN apt -qqy update \
 #   (use in Ubuntu <= 14) packages: libav-tools libx264-142
 RUN apt -qqy update \
   && apt -qqy --no-install-recommends install \
-    libav-tools \
+  libav-tools \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -558,12 +559,12 @@ RUN apt -qqy update \
 # Layer size: big: 83.51 MB
 # Adding libasound2 and others, credits to @jackTheRipper
 #  https://github.com/SeleniumHQ/docker-selenium/pull/418
-    # libasound2 \
-    # libpulse-dev \
-    # xul-ext-ubufox \
+# libasound2 \
+# libpulse-dev \
+# xul-ext-ubufox \
 RUN apt -qqy update \
   && apt -qqy --no-install-recommends install \
-    `apt-cache depends firefox | awk '/Depends:/{print$2}'` \
+  `apt-cache depends firefox | awk '/Depends:/{print$2}'` \
   && rm -rf /var/lib/apt/lists/* \
   && apt -qyy clean
 
@@ -594,10 +595,10 @@ USER seluser
 #=============================
 USER root
 
-ENV FF_LANG="en-US" \
-    FF_BASE_URL="https://archive.mozilla.org/pub" \
-    FF_PLATFORM="linux-x86_64" \
-    FF_INNER_PATH="firefox/releases"
+ENV FF_LANG="ja" \
+  FF_BASE_URL="https://archive.mozilla.org/pub" \
+  FF_PLATFORM="linux-x86_64" \
+  FF_INNER_PATH="firefox/releases"
 
 #--- For Selenium 3
 # Layer size: big: 108.2 MB
@@ -623,7 +624,7 @@ LABEL selenium_firefox_version "${FF_VER}"
 ARG GECKOD_VER="0.24.0"
 ENV GECKOD_URL="https://github.com/mozilla/geckodriver/releases/download"
 RUN wget --no-verbose -O geckodriver.tar.gz \
-     "${GECKOD_URL}/v${GECKOD_VER}/geckodriver-v${GECKOD_VER}-linux64.tar.gz" \
+  "${GECKOD_URL}/v${GECKOD_VER}/geckodriver-v${GECKOD_VER}-linux64.tar.gz" \
   && rm -rf /opt/geckodriver* \
   && tar -C /opt -xvzf geckodriver.tar.gz \
   && chmod +x /opt/geckodriver \
@@ -641,8 +642,8 @@ COPY bin/fail /usr/bin/
 #  https://www.google.de/linuxrepositories/
 ARG EXPECTED_CHROME_VERSION="73.0.3683.75"
 ENV CHROME_URL="https://dl.google.com/linux/direct" \
-    CHROME_BASE_DEB_PATH="/home/seluser/chrome-deb/google-chrome" \
-    GREP_ONLY_NUMS_VER="[0-9.]{2,20}"
+  CHROME_BASE_DEB_PATH="/home/seluser/chrome-deb/google-chrome" \
+  GREP_ONLY_NUMS_VER="[0-9.]{2,20}"
 
 LABEL selenium_chrome_version "${EXPECTED_CHROME_VERSION}"
 
@@ -650,9 +651,9 @@ LABEL selenium_chrome_version "${EXPECTED_CHROME_VERSION}"
 RUN apt -qqy update \
   && mkdir -p chrome-deb \
   && wget -nv "${CHROME_URL}/google-chrome-stable_current_amd64.deb" \
-          -O "./chrome-deb/google-chrome-stable_current_amd64.deb" \
+  -O "./chrome-deb/google-chrome-stable_current_amd64.deb" \
   && apt -qyy --no-install-recommends install \
-        "${CHROME_BASE_DEB_PATH}-stable_current_amd64.deb" \
+  "${CHROME_BASE_DEB_PATH}-stable_current_amd64.deb" \
   && rm "${CHROME_BASE_DEB_PATH}-stable_current_amd64.deb" \
   && rm -rf ./chrome-deb \
   && apt -qyy autoremove \
@@ -671,7 +672,7 @@ COPY lib/* /usr/lib/
 COPY images/wallpaper-dosel.png /usr/share/images/fluxbox/ubuntu-light.png
 COPY images/wallpaper-zalenium.png /usr/share/images/fluxbox/
 RUN chown -R seluser:seluser /usr/share/images/fluxbox/ \
- && chmod -R 777 /usr/share/images/fluxbox
+  && chmod -R 777 /usr/share/images/fluxbox
 
 #===================================================
 # Run the following commands as non-privileged user
@@ -684,7 +685,7 @@ USER seluser
 # How to get cpu arch dynamically: $(lscpu | grep Architecture | sed "s/^.*_//")
 ARG CHROME_DRIVER_VERSION="73.0.3683.68"
 ENV CHROME_DRIVER_BASE="chromedriver.storage.googleapis.com" \
-    CPU_ARCH="64"
+  CPU_ARCH="64"
 ENV CHROME_DRIVER_FILE="chromedriver_linux${CPU_ARCH}.zip"
 ENV CHROME_DRIVER_URL="https://${CHROME_DRIVER_BASE}/${CHROME_DRIVER_VERSION}/${CHROME_DRIVER_FILE}"
 # Gets latest chrome driver version. Or you can hard-code it, e.g. 2.15
@@ -693,10 +694,10 @@ RUN  wget -nv -O chromedriver_linux${CPU_ARCH}.zip ${CHROME_DRIVER_URL} \
   && unzip chromedriver_linux${CPU_ARCH}.zip \
   && rm chromedriver_linux${CPU_ARCH}.zip \
   && mv chromedriver \
-        chromedriver-${CHROME_DRIVER_VERSION} \
+  chromedriver-${CHROME_DRIVER_VERSION} \
   && chmod 755 chromedriver-${CHROME_DRIVER_VERSION} \
   && ln -s chromedriver-${CHROME_DRIVER_VERSION} \
-           chromedriver \
+  chromedriver \
   && sudo ln -s /home/seluser/chromedriver /usr/bin
 
 #=================
@@ -714,12 +715,12 @@ COPY ./dns/etc/hosts /tmp/hosts
 # Envs
 #======
 ENV DEFAULT_SELENIUM_HUB_PORT="24444" \
-    DEFAULT_SELENIUM_NODE_CH_PORT="25550" \
-    DEFAULT_SELENIUM_NODE_FF_PORT="25551" \
-    DEFAULT_SELENIUM_MULTINODE_PORT="25552" \
-    DEFAULT_VNC_PORT="25900" \
-    DEFAULT_NOVNC_PORT="26080" \
-    DEFAULT_SUPERVISOR_HTTP_PORT="19001"
+  DEFAULT_SELENIUM_NODE_CH_PORT="25550" \
+  DEFAULT_SELENIUM_NODE_FF_PORT="25551" \
+  DEFAULT_SELENIUM_MULTINODE_PORT="25552" \
+  DEFAULT_VNC_PORT="25900" \
+  DEFAULT_NOVNC_PORT="26080" \
+  DEFAULT_SUPERVISOR_HTTP_PORT="19001"
 
 # Commented for now; all these versions are still available at
 #   https://github.com/elgalu/docker-selenium/releases/tag/2.47.1m
@@ -892,8 +893,8 @@ ENV FIREFOX_VERSION="${FF_VER}" \
   CHROME_ARGS="--no-sandbox --disable-setuid-sandbox --disable-gpu --disable-infobars" \
   CHROME_ADDITIONAL_ARGS="" \
   CHROME_VERBOSELOGGING="true" \
-  MAX_INSTANCES=1 \
-  MAX_SESSIONS=1 \
+  MAX_INSTANCES=10 \
+  MAX_SESSIONS=10 \
   SEL_RELEASE_TIMEOUT_SECS="19000" \
   SEL_BROWSER_TIMEOUT_SECS="16000" \
   SELENIUM_NODE_REGISTER_CYCLE="5000" \
@@ -912,7 +913,7 @@ ENV FIREFOX_VERSION="${FF_VER}" \
   VNC_CLI_OPTS="-forever -shared" \
   VNC_PASSWORD=no \
   NOVNC_PORT="${DEFAULT_NOVNC_PORT}" \
-  NOVNC="false" \
+  NOVNC="true" \
   NOVNC_WAIT_TIMEOUT="5s" \
   SUPERVISOR_HTTP_PORT="${DEFAULT_SUPERVISOR_HTTP_PORT}" \
   SUPERVISOR_HTTP_USERNAME="supervisorweb" \
@@ -976,10 +977,7 @@ ENV FIREFOX_VERSION="${FF_VER}" \
   DOCKER_SOCK="/var/run/docker.sock" \
   TEST_SLEEPS="0.1" \
   ZALENIUM="false" \
-  SEND_ANONYMOUS_USAGE_INFO="true" \
-  GA_TRACKING_ID="UA-18144954-9" \
-  GA_ENDPOINT=https://www.google-analytics.com/collect \
-  GA_API_VERSION="1" \
+  SEND_ANONYMOUS_USAGE_INFO="false" \
   LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu/" \
   DEBIAN_FRONTEND="" \
   USE_KUBERNETES="false" \
@@ -1018,9 +1016,9 @@ RUN echo "${SEL_VER}-$(cat GLOBAL_PATCH_LEVEL.txt)" > /home/seluser/VERSION
 
 # Moved from entry.sh
 ENV SUPERVISOR_PIDFILE="${RUN_DIR}/supervisord.pid" \
-    DOCKER_SELENIUM_STATUS="${LOGS_DIR}/docker-selenium-status.log" \
-    VNC_TRYOUT_ERR_LOG="${LOGS_DIR}/vnc-tryouts-stderr" \
-    VNC_TRYOUT_OUT_LOG="${LOGS_DIR}/vnc-tryouts-stdout"
+  DOCKER_SELENIUM_STATUS="${LOGS_DIR}/docker-selenium-status.log" \
+  VNC_TRYOUT_ERR_LOG="${LOGS_DIR}/vnc-tryouts-stderr" \
+  VNC_TRYOUT_OUT_LOG="${LOGS_DIR}/vnc-tryouts-stdout"
 
 #===================================
 # Fix dirs (again) and final chores
